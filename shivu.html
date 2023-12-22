@@ -1,0 +1,67 @@
+#include <stdio.h>
+    #include <stdlib.h>
+    
+    
+    struct TaskNode {
+        char taskName[50];
+        struct TaskNode* next;
+    };
+    
+    
+    struct TaskNode* insertTask(struct TaskNode* head, const char* newTaskName) {
+        struct TaskNode* newTask = (struct TaskNode*)malloc(sizeof(struct TaskNode));
+        if (newTask == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(1); // Exit with an error code
+        }
+    
+
+        snprintf(newTask->taskName, sizeof(newTask->taskName), "%s", newTaskName);
+    
+
+        newTask->next = head;
+    
+        // Return the new head of the list
+        return newTask;
+    }
+
+    void displayTasks(struct TaskNode* head) {
+        struct TaskNode* current = head;
+    
+        printf("Task List:\n");
+        while (current != NULL) {
+            printf("- %s\n", current->taskName);
+            current = current->next;
+        }
+    
+        printf("\n");
+    }
+    
+    
+    void freeTasks(struct TaskNode* head) {
+        struct TaskNode* current = head;
+        struct TaskNode* nextTask;
+    
+        while (current != NULL) {
+            nextTask = current->next;
+            free(current);
+            current = nextTask;
+        }
+    }
+    
+    int main() {
+        
+        struct TaskNode* taskList = NULL;
+    
+    
+        taskList = insertTask(taskList, "Complete project report");
+        taskList = insertTask(taskList, "Prepare for meeting");
+        taskList = insertTask(taskList, "Review code changes");
+
+        displayTasks(taskList);
+    
+        
+        freeTasks(taskList);
+    
+        return 0;
+    }
